@@ -211,7 +211,7 @@ function Public() {
 
     /**
      * Used to get current tick values for a market.
-     * @param market - 	a string literal for the market (ex: XKR/USDT)
+     * @param market -    a string literal for the market (ex: XKR/USDT)
      */
     this.getTicker = async function (market = '') {
         const req = await fetch(URL + `/public/getticker?market=${market}`)
