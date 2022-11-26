@@ -2,9 +2,9 @@
   "name": "Txbit-bot",
   "version": "1.0.0",
   "description": "A wrapped api to build trading bots on TxBit",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
-    "start": "node main.js",
+    "start": "node src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

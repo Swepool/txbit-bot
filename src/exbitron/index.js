@@ -9,16 +9,17 @@ function API(key , secret ) {
     const apiKey = key
     const apiSecret = secret
     const nonce = Date.now()
+    const headers = {
+        headers: {
+            "X-Auth-Apikey": apiKey,
+            "X-Auth-Nonce": nonce,
+            "X-Auth-Signature": sign(apiSecret, (nonce + apiKey))
+        }
+    }
 
     this.getBalances = async function () {
         const endpoint = URL + `/account/balances`
-        const req = await fetch(endpoint, {
-            headers: {
-                "X-Auth-Apikey": apiKey,
-                "X-Auth-Nonce": nonce,
-                "X-Auth-Signature": sign(apiSecret, (nonce + apiKey))
-            }
-        })
+        const req = await fetch(endpoint, headers)
         return await req.json()
     }
 }

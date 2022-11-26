@@ -1,6 +1,6 @@
 const clc = require("cli-color");
 const TxBit = require('./txbit');
-const Exbitron = require('./exbitron/index')
+const Exbitron = require('./exbitron')
 
 require('dotenv').config()
 
