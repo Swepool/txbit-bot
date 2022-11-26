@@ -7,7 +7,7 @@ const URL = 'https://api.txbit.io/api'
 /**
  * MARKET API
  * Used to sell, buy and cancel trades
- * Read more here https://apidocs.txbit.io/#market-api
+ * [Read more]{@link https://apidocs.txbit.io/#market-api}
  * @param key - Your TxBit.io api key
  * @param secret - Your TxBit.io api secret
  * @constructor
@@ -21,7 +21,7 @@ function Market(key = '', secret = '') {
     /**
      * Used to place a Buy Limit order in a specific market
      * The quantity must be limited to 4 decimal places (0.0000) or you will receive a QUANTITY_INVALID error message when trying to set the order.
-     * Read more here https://apidocs.txbit.io/#market-api
+     * [Read more]{@link https://apidocs.txbit.io/#market-api}
      * @param market - a string literal for the market (ex: XKR/USDT)
      * @param quantity - the amount to purchase (ex: XKR/USDT)
      * @param rate - the price at which the order will be placed (ex: XKR/USDT)
@@ -37,7 +37,7 @@ function Market(key = '', secret = '') {
     /**
      * Used to place a Sell Limit order in a specific market.
      * The quantity must be limited to 4 decimal places (0.0000) or you will receive a QUANTITY_INVALID error message when trying to set the order.
-     * Read more here https://apidocs.txbit.io/#market-api
+     * [Read more]{@link https://apidocs.txbit.io/#market-api}
      * @param market - a string literal for the market (ex: XKR/USDT)
      * @param quantity - the amount to purchase (ex: XKR/USDT)
      * @param rate - the price at which the order will be placed (ex: XKR/USDT)
@@ -52,7 +52,7 @@ function Market(key = '', secret = '') {
 
     /**
      * Get all orders that you currently have opened. A specific market can be requested.
-     * Read more here https://apidocs.txbit.io/#market-api
+     * [Read more]{@link https://apidocs.txbit.io/#market-api}
      * @param market - a string literal for the market (ex: XKR/USDT)
      */
     this.getOpenOrders = async function (market = '') {
@@ -65,7 +65,7 @@ function Market(key = '', secret = '') {
 
     /**
      * Used to cancel a buy or sell order.
-     * Read more here https://apidocs.txbit.io/#market-api
+     * [Read more]{@link https://apidocs.txbit.io/#market-api}
      * @param orderId - uuid of buy or sell order
      */
     this.cancel = async function (orderId = '') {
@@ -81,7 +81,7 @@ function Market(key = '', secret = '') {
  * ACCOUNT API
  * Used to access account information like balance, history, withdrawals & deposits.
  * Withdrawals needs to be enabled on TxBit in settings
- * Read more here https://apidocs.txbit.io/#account-api
+ * [Read more]{@link https://apidocs.txbit.io/#account-api}
  * @param key - Your TxBit.io api key
  * @param secret - Your TxBit.io api secret
  * @constructor
@@ -93,7 +93,7 @@ function Account(key = '', secret = '') {
 
     /**
      * Used to retrieve all balances from your account.
-     * Read more here https://apidocs.txbit.io/#account-api
+     * [Read more]{@link https://apidocs.txbit.io/#account-api}
      */
     this.getBalances = async function () {
         const endpoint = URL + `/account/getbalances?apikey=${apiKey}&nonce=${nonce}`
@@ -105,7 +105,7 @@ function Account(key = '', secret = '') {
 
     /**
      * Used to retrieve the balance from your account for a specific asset.
-     * Read more here https://apidocs.txbit.io/#account-api
+     * [Read more]{@link https://apidocs.txbit.io/#account-api}
      * @param currency - a string literal for the market (ex: XKR)
      */
     this.getBalance = async function (currency = '') {
@@ -118,7 +118,7 @@ function Account(key = '', secret = '') {
 
     /**
      * Used to retrieve or generate an address for a specific currency. If one does not exist, the call will fail and return ADDRESS_GENERATING until one is available
-     * Read more here https://apidocs.txbit.io/#account-api
+     * [Read more]{@link https://apidocs.txbit.io/#account-api}
      * @param currency - a string literal for the market (ex: XKR)
      */
     this.getDepositAddress = async function (currency = '') {
@@ -131,7 +131,7 @@ function Account(key = '', secret = '') {
 
     /**
      * Used to withdraw funds from your account. Note: please account for txfee.
-     * Read more here https://apidocs.txbit.io/#account-api
+     * [Read more]{@link https://apidocs.txbit.io/#account-api}
      * @param currency - a string literal for the market (ex: XKR)
      * @param quantity - amount to withdraw
      * @param address - asset will be sent to this address
@@ -146,7 +146,7 @@ function Account(key = '', secret = '') {
 
     /**
      * Used to retrieve a single order by uuid.
-     * Read more here https://apidocs.txbit.io/#account-api
+     * [Read more]{@link https://apidocs.txbit.io/#account-api}
      * @param orderId - the uuid of the buy or sell order
      */
     this.getOrder = async function (orderId = '') {
@@ -159,7 +159,7 @@ function Account(key = '', secret = '') {
 
     /**
      * Used to retrieve your order history.
-     * Read more here https://apidocs.txbit.io/#account-api
+     * [Read more]{@link https://apidocs.txbit.io/#account-api}
      */
     this.getOrderHistory = async function () {
         const endpoint = URL + `/account/getorderhistory?apikey=${apiKey}&nonce=${nonce}`
@@ -171,7 +171,7 @@ function Account(key = '', secret = '') {
 
     /**
      * Used to retrieve your withdrawal history.
-     * Read more here https://apidocs.txbit.io/#account-api
+     * [Read more]{@link https://apidocs.txbit.io/#account-api}
      * @param currency - a string literal for the asset (ie. XKR). If omitted, will return for all assets.
      */
     this.getWithdrawalHistory = async function (currency = '') {
@@ -184,7 +184,7 @@ function Account(key = '', secret = '') {
 
     /**
      * Used to retrieve your deposit history.
-     * Read more here https://apidocs.txbit.io/#account-api
+     * [Read more]{@link https://apidocs.txbit.io/#account-api}
      * @param currency - a string literal for the asset (ie. XKR). If omitted, will return for all assets.
      */
     this.getDepositHistory = async function (currency = '') {
@@ -200,14 +200,14 @@ function Account(key = '', secret = '') {
 /**
  * PUBLIC API
  * Used to access public endpoints like markets, tickers, order-book, history, etc.
- * Read more here https://apidocs.txbit.io/#public-api
+ * [Read more]{@link https://apidocs.txbit.io/#public-api}
  * @constructor
  */
 function Public() {
 
     /**
      * Used to get the open and available trading markets at Txbit.io along with other meta data.
-     * Read more here https://apidocs.txbit.io/#public-api
+     * [Read more]{@link https://apidocs.txbit.io/#public-api}
      */
     this.getMarkets = async function () {
         const req = await fetch(URL + '/public/getmarkets')
@@ -216,7 +216,7 @@ function Public() {
 
     /**
      * Used to get all supported assets on Txbit.io along with other meta data.
-     * Read more here https://apidocs.txbit.io/#public-api
+     * [Read more]{@link https://apidocs.txbit.io/#public-api}
      */
     this.getCurrencies = async function () {
         const req = await fetch(URL + '/public/getcurrencies')
@@ -225,7 +225,7 @@ function Public() {
 
     /**
      * Used to get current tick values for a market.
-     * Read more here https://apidocs.txbit.io/#public-api
+     * [Read more]{@link https://apidocs.txbit.io/#public-api}
      * @param market -    a string literal for the market (ex: XKR/USDT)
      */
     this.getTicker = async function (market = '') {
@@ -235,7 +235,7 @@ function Public() {
 
     /**
      * Used to get the last 24 hour summary of all active markets.
-     * Read more here https://apidocs.txbit.io/#public-api
+     * [Read more]{@link https://apidocs.txbit.io/#public-api}
      */
     this.getMarketSummaries = async function () {
         const req = await fetch(URL + `/public/getmarketsummaries`)
@@ -244,7 +244,7 @@ function Public() {
 
     /**
      * Used to get the last 24 hour summary of a specific market.
-     * Read more here https://apidocs.txbit.io/#public-api
+     * [Read more]{@link https://apidocs.txbit.io/#public-api}
      * @param market - a string literal for the market (ex: XKR/USDT)
      */
     this.getMarketSummary = async function (market = '') {
@@ -254,7 +254,7 @@ function Public() {
 
     /**
      * Used to get retrieve the orderbook for a given market.
-     * Read more here https://apidocs.txbit.io/#public-api
+     * [Read more]{@link https://apidocs.txbit.io/#public-api}
      * @param market - a string literal for the market (ex: XKR/USDT)
      * @param type - buy, sell or both to return specific type of orderbook
      */
@@ -265,7 +265,7 @@ function Public() {
 
     /**
      * Used to retrieve the latest trades that have occurred for a specific market.
-     * Read more here https://apidocs.txbit.io/#public-api
+     * [Read more]{@link https://apidocs.txbit.io/#public-api}
      * @param market - a string literal for the market (ex: XKR/USDT)
      */
     this.getMarketHistory = async function (market = '') {
@@ -275,7 +275,7 @@ function Public() {
 
     /**
      * Used to retrieve the system related status for all currencies listed on Txbit, such as can the currency be deposited, withdrawn or traded. How many pending deposits and withdrawals there are and a development note if it exists.
-     * Read more here https://apidocs.txbit.io/#public-api
+     * [Read more]{@link https://apidocs.txbit.io/#public-api}
      */
     this.getSystemStatus = async function () {
         const req = await fetch(URL + `/public/getsystemstatus`)
@@ -284,7 +284,7 @@ function Public() {
 
     /**
      * Used to retrieve specific information and metadata about the listed currency on Txbit.
-     * Read more here https://apidocs.txbit.io/#public-api
+     * [Read more]{@link https://apidocs.txbit.io/#public-api}
      * @param currency - a string literal for the currency (ex: XKR)
      */
     this.getCurrencyInformation = async function (currency = '') {
@@ -294,7 +294,7 @@ function Public() {
 
     /**
      * Used to retrieve solvency information for listed currencies on Txbit. See the current Hot wallet and Cold wallet balances, Total deposits and withdrawals and the final balance to prove solvency. All calculated in real time.
-     * Read more here https://apidocs.txbit.io/#public-api
+     * [Read more]{@link https://apidocs.txbit.io/#public-api}
      * @param currency - a string literal for the currency (ex: XKR)
      */
     this.getCurrencyBalanceSheet = async function (currency = '') {
