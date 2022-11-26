@@ -4,6 +4,7 @@
   "description": "A wrapped api to build trading bots on TxBit",
   "main": "main.js",
   "scripts": {
+    "start": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "cli-color": "^2.0.3",
+    "cross-fetch": "^3.1.5",
     "dotenv": "^16.0.3"
   }
 }

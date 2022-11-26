@@ -1,6 +1,6 @@
 // Kryptokrona ©2022
-
 const crypto = require("crypto");
+const fetch = require('cross-fetch')
 
 const URL = 'https://api.txbit.io/api'
 
