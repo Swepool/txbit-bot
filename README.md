@@ -1,6 +1,6 @@
 # txbit-bot-template
- 
-Just a api wrapper written in JavaScript to build trading bots for TxBit.io
+
+Just a template with an API wrapper written in JavaScript to build trading bots for TxBit.io
 
 # TODO
 - Error handling
