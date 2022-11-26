@@ -1,0 +1,15 @@
+{
+  "name": "Txbit-bot",
+  "version": "1.0.0",
+  "description": "A wrapped api to build trading bots on TxBit",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cli-color": "^2.0.3"
+  }
+}
