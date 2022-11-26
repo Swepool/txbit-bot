@@ -4,11 +4,12 @@ const {fetch} = require('cross-fetch')
 
 const URL = 'https://www.exbitron.com/api/v2/peatio'
 
-function API(key , secret ) {
+function API(key , secret) {
 
     const apiKey = key
     const apiSecret = secret
     const nonce = Date.now()
+
     const headers = {
         headers: {
             "X-Auth-Apikey": apiKey,
@@ -22,10 +23,11 @@ function API(key , secret ) {
         const req = await fetch(endpoint, headers)
         return await req.json()
     }
+
 }
 
 const sign = (apiSecret, data) => {
-    return crypto.createHmac("sha256",apiSecret).update(data).digest('hex')
+    return crypto.createHmac("sha256", apiSecret).update(data).digest('hex')
 }
 
 exports.API = API
