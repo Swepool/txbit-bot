@@ -131,6 +131,14 @@ function API(key, secret) {
 
         markets: {
 
+
+
+            available: async function () {
+                const endpoint = URL + `/public/markets/tickers`
+                const req = await fetch(`${endpoint}`, {method: 'GET'})
+                return await req.json()
+            },
+
             /**
              * Get ticker of all markets
              */
@@ -142,6 +150,33 @@ function API(key, secret) {
         },
 
         market: {
+
+            //TODO add all queries
+            /**
+             * Get all available markets
+             * @param {number} limit - 	Limit the number of returned paginations. Defaults to 100.
+             * @param {number} page - Specify the page of paginated results.
+             * @param {string} ordering - If set, returned values will be sorted in specific order, defaults to 'asc'.
+             * @param {string} order_by - Name of the field, which result will be ordered by.
+             * @param {string} base_unit - Strict filter for base unit
+             * @param {string} quote_unit -	Strict filter for quote unit
+             * @param {string} type - Strict filter for market type
+             */
+            all: async function (limit, page, ordering, order_by, base_unit, quote_unit, type) {
+                const endpoint = URL + `/public/markets`
+
+                let params = new url.URLSearchParams()
+                if(limit) params.append('limit', limit)
+                if(page) params.append('page', page)
+                if(ordering) params.append('ordering', ordering)
+                if(order_by) params.append('order_by', order_by)
+                if(base_unit) params.append('base_unit', base_unit)
+                if(quote_unit) params.append('quote_unit', quote_unit)
+                if(type) params.append('type', type)
+
+                const req = await fetch(`${endpoint}?${params.toString()}`, {method: 'GET'})
+                return await req.json()
+            },
 
             /**
              * Get ticker of specific market.
@@ -200,7 +235,6 @@ function API(key, secret) {
              * @param {number} limit - 	Limit the number of returned trades. Default to 100.
              * @param {number} timestamp - 	An integer represents the seconds elapsed since Unix epoch.If set, only trades executed before the time will be returned.
              * @param {string} order_by - 	If set, returned trades will be sorted in specific order, default to 'desc'.
-             * @returns {Promise<any>}
              */
             trades: async function (market, limit, timestamp, order_by) {
                 if(!market) throw Error('Missing market argument')
@@ -211,6 +245,25 @@ function API(key, secret) {
                 if(limit) params.append('limit', limit)
                 if(timestamp) params.append('timestamp', timestamp)
                 if(order_by) params.append('order_by', order_by)
+
+                const req = await fetch(`${endpoint}?${params.toString()}`, {method: 'GET'})
+                return await req.json()
+            },
+
+            /**
+             * Get the order book of specified market.
+             * @param {string} market - required
+             * @param {number} asks_limit - Limit the number of returned sell orders. Default to 20.
+             * @param {number} bids_limit - Limit the number of returned buy orders. Default to 20.
+             */
+            orderBook: async function (market, asks_limit, bids_limit) {
+                if(!market) throw Error('Missing market argument')
+
+                const endpoint = URL + `/public/markets/${market}/order-book`
+
+                let params = new url.URLSearchParams()
+                if(asks_limit) params.append('asks_limit', asks_limit)
+                if(bids_limit) params.append('timestamp', bids_limit)
 
                 const req = await fetch(`${endpoint}?${params.toString()}`, {method: 'GET'})
                 return await req.json()
