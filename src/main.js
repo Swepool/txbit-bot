@@ -17,7 +17,7 @@ const main = async () => {
 
     //JUST A TESTS, YOU CAN REMOVE THIS
     console.log(await txbit.account.getBalance('BTC'))
-    //console.log(await exbitron.getBalances())
+    console.log(await exbitron.public.market.kLine())
 
     //NOW, BUILD SOMETHING COOL BELOW 😎🤙
 }
