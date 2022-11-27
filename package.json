@@ -13,6 +13,8 @@
   "dependencies": {
     "cli-color": "^2.0.3",
     "cross-fetch": "^3.1.5",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "form-data": "^4.0.0",
+    "otplib": "^12.0.1"
   }
 }

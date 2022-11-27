@@ -13,13 +13,10 @@ const exbitron = new Exbitron.API(EXBITRON_KEY, EXBITRON_SECRET)
 
 const main = async () => {
 
-    console.log(clc.green('BOT STARTED 🥳'))
+    console.log(clc.green('BOT STARTED 🚨'))
 
-    //JUST A TESTS, YOU CAN REMOVE THIS
-    console.log(await txbit.account.getBalance('BTC'))
-    console.log(await exbitron.public.market.kLine())
+    await exbitron.market.cancelAllOrders()
 
-    //NOW, BUILD SOMETHING COOL BELOW 😎🤙
 }
 
 main()
