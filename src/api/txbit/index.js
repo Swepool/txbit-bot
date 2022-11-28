@@ -1,4 +1,4 @@
-// Kryptokrona ©2022
+// Swepool ©2022
 const crypto = require("crypto");
 const {fetch} = require('cross-fetch')
 const url = require("url");
