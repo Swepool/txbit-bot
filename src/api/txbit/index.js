@@ -31,7 +31,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to place a Sell Limit order in a specific market.
          * The quantity must be limited to 4 decimal places (0.0000) or you will receive a QUANTITY_INVALID error message when trying to set the order.
          * [Read more]{@link https://apidocs.txbit.io/#market-api}
@@ -50,7 +50,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Get all orders that you currently have opened. A specific market can be requested.
          * [Read more]{@link https://apidocs.txbit.io/#market-api}
          * @param {string=} market - a string literal for the market (ex: XKR/USDT)
@@ -69,7 +69,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to cancel a buy or sell order.
          * [Read more]{@link https://apidocs.txbit.io/#market-api}
          * @param {string} orderId - uuid of buy or sell order
@@ -88,7 +88,7 @@ function API(key, secret) {
 
     this.account = {
 
-        /** (TESTED)
+        /**
          * Used to retrieve all balances from your account.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
          * @return {Promise<any>}
@@ -102,7 +102,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to retrieve the balance from your account for a specific asset.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
          * @param {string} currency - a string literal for the market (ex: XKR)
@@ -118,7 +118,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to retrieve or generate an address for a specific currency. If one does not exist, the call will fail and return ADDRESS_GENERATING until one is available
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
          * @param {string} currency - a string literal for the market (ex: XKR)
@@ -134,7 +134,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to withdraw funds from your account. Note: please account for txfee.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
          * @param {string} currency - a string literal for the market (ex: XKR)
@@ -160,7 +160,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to retrieve a single order by uuid.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
          * @param {string} orderId - the uuid of the buy or sell order
@@ -176,7 +176,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to retrieve your order history.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
          * @return {Promise<any>}
@@ -189,7 +189,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to retrieve your withdrawal history.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
          * @param {string=} currency - a string literal for the asset (ie. XKR). If omitted, will return for all assets.
@@ -208,7 +208,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to retrieve your deposit history.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
          * @param {string=} currency - a string literal for the asset (ie. XKR). If omitted, will return for all assets.
@@ -229,7 +229,7 @@ function API(key, secret) {
     }
 
     this.public = {
-        /** (TESTED)
+        /**
          * Used to get the open and available trading markets at Txbit.io along with other meta data.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
          * @return {Promise<any>}
@@ -239,7 +239,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to get all supported assets on Txbit.io along with other meta data.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
          * @return {Promise<any>}
@@ -249,7 +249,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to get current tick values for a market.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
          * @param {string} market - a string literal for the market (ex: XKR/USDT)
@@ -261,7 +261,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to get the last 24 hour summary of all active markets.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
          * @return {Promise<any>}
@@ -271,7 +271,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to get the last 24 hour summary of a specific market.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
          * @param {string} market - a string literal for the market (ex: XKR/USDT)
@@ -283,7 +283,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to get retrieve the orderbook for a given market.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
          * @param {string} market - a string literal for the market (ex: XKR/USDT)
@@ -296,7 +296,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to retrieve the latest trades that have occurred for a specific market.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
          * @param {string}market - a string literal for the market (ex: XKR/USDT)
@@ -308,7 +308,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to retrieve the system related status for all currencies listed on Txbit, such as can the currency be deposited, withdrawn or traded. How many pending deposits and withdrawals there are and a development note if it exists.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
          * @return {Promise<any>}
@@ -318,7 +318,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to retrieve specific information and metadata about the listed currency on Txbit.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
          * @param {string} currency - a string literal for the currency (ex: XKR)
@@ -330,7 +330,7 @@ function API(key, secret) {
             return await req.json()
         },
 
-        /** (TESTED)
+        /**
          * Used to retrieve solvency information for listed currencies on Txbit. See the current Hot wallet and Cold wallet balances, Total deposits and withdrawals and the final balance to prove solvency. All calculated in real time.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
          * @param {string} currency - a string literal for the currency (ex: XKR)
