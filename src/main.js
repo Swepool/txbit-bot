@@ -15,8 +15,7 @@ const main = async () => {
 
     console.log(clc.green('BOT STARTED 🚨'))
 
-
-    console.log(await txbit.market.cancelOrder('bec40840-f36b-1410-8ee1-00532493487a'))
+    
 }
 
 main()
