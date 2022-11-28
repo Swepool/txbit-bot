@@ -1,4 +1,4 @@
-# txbit-bot-template
+# txbit-bot
 Just a template with an API wrapper written in JavaScript to build trading bots for TxBit.io
 
 Txbit api docs - https://apidocs.txbit.io
