@@ -1,7 +1,7 @@
 # txbit-bot-template
 Just a template with an API wrapper written in JavaScript to build trading bots for TxBit.io
 
-Txbit api docs - https://apidocs.txbit.io/#txbit-io-api
+Txbit api docs - https://apidocs.txbit.io
 
 # Setup
 Create a `.env` file in root and enter your key & secret created at TxBit.io
