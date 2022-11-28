@@ -15,7 +15,7 @@ const main = async () => {
 
     console.log(clc.green('BOT STARTED 🚨'))
 
-    
+
 }
 
 main()
