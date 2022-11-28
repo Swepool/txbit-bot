@@ -9,6 +9,21 @@ You can have a look at `.env-example` for reference. Double check the api key-pa
 
 Then build your bot in `main.js`
 
+example:
+
+```
+const TXBIT_KEY = process.env.TXBIT_API_KEY
+const TXBIT_SECRET = process.env.TXBIT_API_SECRET
+
+const txbit = new TxBit.API(TXBIT_KEY, TXBIT_SECRET)
+
+const main = async () => {
+  await txbit.market.buyLimit('XKR/USDT', 1337, 0.003)
+}
+
+main()
+```
+
 # TODO
 - Error handling
 
