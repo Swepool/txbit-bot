@@ -15,7 +15,7 @@ function API(key, secret) {
 
     const headers = {
         "X-Auth-Apikey": apiKey,
-        "X-Auth-Nonce": nonce,
+        "X-Auth-Nonce": getNonce(),
         "X-Auth-Signature": sign(apiSecret, (nonce + apiKey))
 
     }
@@ -43,7 +43,7 @@ function API(key, secret) {
          * @param {number=} data.time_to - An integer represents the seconds elapsed since Unix epoch.If set, only trades executed before the time will be returned.
          * @param {string=} data.order_by - If set, returned trades will be sorted in specific order, default to 'desc'.
          */
-        getTradeHistory: async function(data) {
+        getTradeHistory: async function (data) {
             let endpoint = URL + `/market/trades`
             let params = new url.URLSearchParams()
 
@@ -67,7 +67,7 @@ function API(key, secret) {
          * @param {string=} data.market_type
          * @param {string=} data.side - If present, only sell orders (asks) or buy orders (bids) will be cancelled.
          */
-        cancelAllOrders: async function(data) {
+        cancelAllOrders: async function (data) {
             let endpoint = URL + `/market/orders/cancel`
             let formData = new FormData()
 
@@ -76,7 +76,7 @@ function API(key, secret) {
             if (data?.side) formData.append("side", data.side)
 
             const req = await fetch(`${endpoint}`,
-                {method: 'POST',headers: headers, body: formData})
+                {method: 'POST', headers: headers, body: formData})
             return await req.json()
         },
 
@@ -84,8 +84,8 @@ function API(key, secret) {
          * Cancel an order.
          * @param {string} id - Id of order
          */
-        cancelOrder: async function(id) {
-            if(!id) throw Error('Missing Order ID')
+        cancelOrder: async function (id) {
+            if (!id) throw Error('Missing Order ID')
             let endpoint = URL + `/market/orders/${id}/cancel`
 
             const req = await fetch(`${endpoint}`,
@@ -102,8 +102,8 @@ function API(key, secret) {
          * @param {number} data.price
          * @param {string=} data.ord_type
          */
-        createOrder: async function(data) {
-            if(!(data.market || data.side || data.volume || data.price)) throw Error('Missing arguments')
+        createOrder: async function (data) {
+            if (!(data.market || data.side || data.volume || data.price)) throw Error('Missing arguments')
             let endpoint = URL + `/market/orders`
             let formData = new FormData()
 
@@ -111,10 +111,17 @@ function API(key, secret) {
             formData.append("side", data.side)
             formData.append("volume", data.volume)
             formData.append("price", data.price)
-            if(data?.ord_type) formData.append("ord_type", data.ord_type)
+            if (data?.ord_type) formData.append("ord_type", data.ord_type)
 
-            const req = await fetch(`${endpoint}`,
-                {method: 'POST', headers: headers, body: formData})
+            const req = await fetch(`${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    "X-Auth-Apikey": apiKey,
+                    "X-Auth-Nonce": Date.now(),
+                    "X-Auth-Signature": sign(apiSecret, (Date.now() + apiKey))
+
+                }, body: formData
+            })
             return await req.json()
         },
 
@@ -133,7 +140,7 @@ function API(key, secret) {
          * @param {number} data.time_from - An integer represents the seconds elapsed since Unix epoch.If set, only orders created after the time will be returned.
          * @param {number} data.time_to - An integer represents the seconds elapsed since Unix epoch.If set, only orders created before the time will be returned.
          */
-        getAllOrders: async function(data) {
+        getAllOrders: async function (data) {
             let endpoint = URL + `/market/orders`
             let params = new url.URLSearchParams()
 
@@ -156,8 +163,8 @@ function API(key, secret) {
         },
 
 
-        getOrder: async function(id) {
-            if(!id)throw Error('Missing order ID')
+        getOrder: async function (id) {
+            if (!id) throw Error('Missing order ID')
             let endpoint = URL + `/market/orders/${id}`
             const req = await fetch(`${endpoint}`, {method: 'GET'})
             return await req.json()
@@ -475,18 +482,19 @@ function API(key, secret) {
 
         /**
          * Get the order book of specified market.
-         * @param {string} market - required
-         * @param {number} asks_limit - Limit the number of returned sell orders. Default to 20.
-         * @param {number} bids_limit - Limit the number of returned buy orders. Default to 20.
+         * @param {object} data
+         * @param {string} data.market - required
+         * @param {number=} data.asks_limit - Limit the number of returned sell orders. Default to 20.
+         * @param {number=} data.bids_limit - Limit the number of returned buy orders. Default to 20.
          */
-        getOrderBook: async function (market, asks_limit, bids_limit) {
-            if (!market) throw Error('Missing market argument')
+        getOrderBook: async function (data) {
+            if (!data.market) throw Error('Missing market argument')
 
-            const endpoint = URL + `/public/markets/${market}/order-book`
+            const endpoint = URL + `/public/markets/${data.market}/order-book`
 
             let params = new url.URLSearchParams()
-            if (asks_limit) params.append('asks_limit', asks_limit)
-            if (bids_limit) params.append('timestamp', bids_limit)
+            if (data?.asks_limit) params.append('asks_limit', data.asks_limit)
+            if (data?.bids_limit) params.append('timestamp', data.bids_limit)
 
             const req = await fetch(`${endpoint}?${params.toString()}`, {method: 'GET'})
             return await req.json()
@@ -527,6 +535,9 @@ function API(key, secret) {
     }
 }
 
+const getNonce = () => {
+
+}
 
 const getOtp = () => {
     const secret = process.env.EXBITRON_OTP_SECRET

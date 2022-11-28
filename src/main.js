@@ -15,8 +15,8 @@ const main = async () => {
 
     console.log(clc.green('BOT STARTED 🚨'))
 
-    await exbitron.market.cancelAllOrders()
 
+    console.log(await txbit.market.cancelOrder('bec40840-f36b-1410-8ee1-00532493487a'))
 }
 
 main()

@@ -1,6 +1,7 @@
 // Kryptokrona ©2022
 const crypto = require("crypto");
 const {fetch} = require('cross-fetch')
+const url = require("url");
 
 const URL = 'https://api.txbit.io/api'
 
@@ -8,7 +9,6 @@ function API(key, secret) {
 
     const apiKey = key
     const apiSecret = secret
-    const nonce = Date.now()
 
     this.market = {
 
@@ -16,54 +16,69 @@ function API(key, secret) {
          * Used to place a Buy Limit order in a specific market
          * The quantity must be limited to 4 decimal places (0.0000) or you will receive a QUANTITY_INVALID error message when trying to set the order.
          * [Read more]{@link https://apidocs.txbit.io/#market-api}
-         * @param market - a string literal for the market (ex: XKR/USDT)
-         * @param quantity - the amount to purchase (ex: XKR/USDT)
-         * @param rate - the price at which the order will be placed (ex: XKR/USDT)
+         * @param {string} market - a string literal for the market (ex: XKR/USDT)
+         * @param {number} quantity - the amount to purchase
+         * @param {number} rate - the price at which the order will be placed
+         * @return {Promise<any>}
          */
-        buyLimit: async function (market = '', quantity = 0, rate = 0) {
-            const endpoint = URL + `/market/buylimit?apikey=${apiKey}&nonce=${nonce}&market=${market}&quantity=${quantity}&rate=${rate}`
+        buyLimit: async function (market, quantity, rate) {
+            if (!(market || rate || quantity)) throw Error ('Missing argument')
+            const endpoint = URL + `/market/buylimit?apikey=${apiKey}&nonce=${Date.now()}&market=${market.toUpperCase()}&quantity=${quantity}&rate=${rate}`
+
             const req = await fetch(endpoint, {
                 headers: {apisign: sign(endpoint, apiSecret)}
             })
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to place a Sell Limit order in a specific market.
          * The quantity must be limited to 4 decimal places (0.0000) or you will receive a QUANTITY_INVALID error message when trying to set the order.
          * [Read more]{@link https://apidocs.txbit.io/#market-api}
-         * @param market - a string literal for the market (ex: XKR/USDT)
-         * @param quantity - the amount to purchase (ex: XKR/USDT)
-         * @param rate - the price at which the order will be placed (ex: XKR/USDT)
+         * @param {string} market - a string literal for the market (ex: XKR/USDT)
+         * @param {number} quantity - the amount to purchase
+         * @param {number} rate - the price at which the order will be placed
+         * @return {Promise<any>}
          */
-        sellLimit: async function (market = '', quantity = 0, rate = 0) {
-            const endpoint = URL + `/market/selllimit?apikey=${apiKey}&nonce=${nonce}&market=${market}&quantity=${quantity}&rate=${rate}`
+        sellLimit: async function (market, quantity, rate) {
+            if (!(market || rate || quantity)) throw Error ('Missing argument')
+            const endpoint = URL + `/market/selllimit?apikey=${apiKey}&nonce=${Date.now()}&market=${market.toUpperCase()}&quantity=${quantity}&rate=${rate}`
+
             const req = await fetch(endpoint, {
                 headers: {apisign: sign(endpoint, apiSecret)}
             })
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Get all orders that you currently have opened. A specific market can be requested.
          * [Read more]{@link https://apidocs.txbit.io/#market-api}
-         * @param market - a string literal for the market (ex: XKR/USDT)
+         * @param {string=} market - a string literal for the market (ex: XKR/USDT)
+         * @return {Promise<any>}
          */
-        getOpenOrders: async function (market = '') {
-            const endpoint = URL + `/market/getopenorders?apikey=${apiKey}&nonce=${nonce}&market=${market}`
-            const req = await fetch(endpoint, {
-                headers: {apisign: sign(endpoint, apiSecret)}
+        getOpenOrders: async function (market) {
+            const endpoint = URL + `/market/getopenorders?apikey=${apiKey}&nonce=${Date.now()}`
+
+            let params = new url.URLSearchParams()
+            if (market) params.append('market', market.toUpperCase())
+
+            const fullUrl = `${endpoint}${params.toString()}`
+            const req = await fetch(fullUrl, {
+                headers: {apisign: sign(fullUrl, apiSecret)}
             })
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to cancel a buy or sell order.
          * [Read more]{@link https://apidocs.txbit.io/#market-api}
-         * @param orderId - uuid of buy or sell order
+         * @param {string} orderId - uuid of buy or sell order
+         * @return {Promise<any>}
          */
-        this: async function (orderId = '') {
-            const endpoint = URL + `/market/cancel?apikey=${apiKey}&nonce=${nonce}&uuid=${orderId}`
+        cancelOrder: async function (orderId) {
+            if (!orderId) throw Error ('Missing argument')
+            const endpoint = URL + `/market/cancel?apikey=${apiKey}&nonce=${Date.now()}&uuid=${orderId}`
+
             const req = await fetch(endpoint, {
                 headers: {apisign: sign(endpoint, apiSecret)}
             })
@@ -73,206 +88,257 @@ function API(key, secret) {
 
     this.account = {
 
-        /**
+        /** (TESTED)
          * Used to retrieve all balances from your account.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
+         * @return {Promise<any>}
          */
         getBalances: async function () {
-            const endpoint = URL + `/account/getbalances?apikey=${apiKey}&nonce=${nonce}`
+            const endpoint = URL + `/account/getbalances?apikey=${apiKey}&nonce=${Date.now()}`
+
             const req = await fetch(endpoint, {
                 headers: {apisign: sign(endpoint, apiSecret)}
             })
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to retrieve the balance from your account for a specific asset.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
-         * @param currency - a string literal for the market (ex: XKR)
+         * @param {string} currency - a string literal for the market (ex: XKR)
+         * @return {Promise<any>}
          */
-        getBalance: async function (currency = '') {
-            const endpoint = URL + `/account/getbalance?apikey=${apiKey}&nonce=${nonce}&currency=${currency}`
+        getBalance: async function (currency) {
+            if (!currency) throw Error ('Missing argument')
+            const endpoint = URL + `/account/getbalance?apikey=${apiKey}&nonce=${Date.now()}&currency=${currency.toUpperCase()}`
+
             const req = await fetch(endpoint, {
                 headers: {apisign: sign(endpoint, apiSecret)}
             })
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to retrieve or generate an address for a specific currency. If one does not exist, the call will fail and return ADDRESS_GENERATING until one is available
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
-         * @param currency - a string literal for the market (ex: XKR)
+         * @param {string} currency - a string literal for the market (ex: XKR)
+         * @return {Promise<any>}
          */
-        getDepositAddress: async function (currency = '') {
-            const endpoint = URL + `/account/getdepositaddress?apikey=${apiKey}&nonce=${nonce}&currency=${currency}`
+        getDepositAddress: async function (currency) {
+            if (!currency) throw Error ('Missing argument')
+            const endpoint = URL + `/account/getdepositaddress?apikey=${apiKey}&nonce=${Date.now()}&currency=${currency.toUpperCase()}`
+
             const req = await fetch(endpoint, {
                 headers: {apisign: sign(endpoint, apiSecret)}
             })
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to withdraw funds from your account. Note: please account for txfee.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
-         * @param currency - a string literal for the market (ex: XKR)
-         * @param quantity - amount to withdraw
-         * @param address - asset will be sent to this address
+         * @param {string} currency - a string literal for the market (ex: XKR)
+         * @param {number} quantity - amount to withdraw
+         * @param {string} address - asset will be sent to this address
+         * @return {Promise<any>}
          */
-        withdraw: async function (currency = '', quantity = 0, address = '') {
-            const endpoint = URL + `/account/withdraw?apikey=${apiKey}&nonce=${nonce}&currency=${currency}&quantity=${quantity}&address=${address}`
-            const req = await fetch(endpoint, {
-                headers: {apisign: sign(endpoint, apiSecret)}
+        withdraw: async function (currency, quantity, address) {
+            if (!(currency || address || quantity)) throw Error ('Missing argument')
+            const endpoint = URL + `/account/withdraw?apikey=${apiKey}&nonce=${Date.now()}`
+
+            let params = new url.URLSearchParams()
+            if (currency) params.append('currency', currency.toUpperCase())
+            if (address) params.append('address', address)
+            if (quantity) params.append('quantity', quantity)
+
+            const fullUrl = `${endpoint}&${params.toString()}`
+
+            console.log(fullUrl)
+            const req = await fetch(fullUrl, {
+                headers: {apisign: sign(fullUrl, apiSecret)}
             })
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to retrieve a single order by uuid.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
-         * @param orderId - the uuid of the buy or sell order
+         * @param {string} orderId - the uuid of the buy or sell order
+         * @return {Promise<any>}
          */
-        getOrder: async function (orderId = '') {
-            const endpoint = URL + `/account/getorder?apikey=${apiKey}&nonce=${nonce}&uuid=${orderId}`
+        getOrder: async function (orderId) {
+            if (!orderId) throw Error ('Missing argument')
+            const endpoint = URL + `/account/getorder?apikey=${apiKey}&nonce=${Date.now()}&uuid=${orderId}`
+
             const req = await fetch(endpoint, {
                 headers: {apisign: sign(endpoint, apiSecret)}
             })
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to retrieve your order history.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
+         * @return {Promise<any>}
          */
         getOrderHistory: async function () {
-            const endpoint = URL + `/account/getorderhistory?apikey=${apiKey}&nonce=${nonce}`
+            const endpoint = URL + `/account/getorderhistory?apikey=${apiKey}&nonce=${Date.now()}`
             const req = await fetch(endpoint, {
                 headers: {apisign: sign(endpoint, apiSecret)}
             })
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to retrieve your withdrawal history.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
-         * @param currency - a string literal for the asset (ie. XKR). If omitted, will return for all assets.
+         * @param {string=} currency - a string literal for the asset (ie. XKR). If omitted, will return for all assets.
+         * @return {Promise<any>}
          */
-        getWithdrawalHistory: async function (currency = '') {
-            const endpoint = URL + `/account/getwithdrawalhistory?apikey=${apiKey}&nonce=${nonce}?currency=${currency}`
-            const req = await fetch(endpoint, {
-                headers: {apisign: sign(endpoint, apiSecret)}
+        getWithdrawalHistory: async function (currency) {
+            const endpoint = URL + `/account/getwithdrawalhistory?apikey=${apiKey}&nonce=${Date.now()}`
+
+            let params = new url.URLSearchParams()
+            if (currency) params.append('currency', currency.toUpperCase())
+
+            const fullUrl = `${endpoint}${params.toString()}`
+            const req = await fetch(fullUrl, {
+                headers: {apisign: sign(fullUrl, apiSecret)}
             })
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to retrieve your deposit history.
          * [Read more]{@link https://apidocs.txbit.io/#account-api}
-         * @param currency - a string literal for the asset (ie. XKR). If omitted, will return for all assets.
+         * @param {string=} currency - a string literal for the asset (ie. XKR). If omitted, will return for all assets.
+         * @return {Promise<any>}
          */
-        getDepositHistory: async function (currency = '') {
-            const endpoint = URL + `/account/getdeposithistory?apikey=${apiKey}&nonce=${nonce}?currency=${currency}`
-            const req = await fetch(endpoint, {
-                headers: {apisign: sign(endpoint, apiSecret)}
+        getDepositHistory: async function (currency) {
+            const endpoint = URL + `/account/getdeposithistory?apikey=${apiKey}&nonce=${Date.now()}`
+
+            let params = new url.URLSearchParams()
+            if (currency) params.append('currency', currency.toUpperCase())
+
+            const fullUrl = `${endpoint}${params.toString()}`
+            const req = await fetch(fullUrl, {
+                headers: {apisign: sign(fullUrl, apiSecret)}
             })
             return await req.json()
         }
     }
 
     this.public = {
-        /**
+        /** (TESTED)
          * Used to get the open and available trading markets at Txbit.io along with other meta data.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
+         * @return {Promise<any>}
          */
         getMarkets: async function () {
             const req = await fetch(URL + '/public/getmarkets')
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to get all supported assets on Txbit.io along with other meta data.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
+         * @return {Promise<any>}
          */
         getCurrencies: async function () {
             const req = await fetch(URL + '/public/getcurrencies')
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to get current tick values for a market.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
-         * @param market -    a string literal for the market (ex: XKR/USDT)
+         * @param {string} market - a string literal for the market (ex: XKR/USDT)
+         * @return {Promise<any>}
          */
-        getTicker: async function (market = '') {
-            const req = await fetch(URL + `/public/getticker?market=${market}`)
+        getTicker: async function (market) {
+            if (!market) throw Error ('Missing argument')
+            const req = await fetch(URL + `/public/getticker?market=${market.toUpperCase()}`)
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to get the last 24 hour summary of all active markets.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
+         * @return {Promise<any>}
          */
         getMarketSummaries: async function () {
             const req = await fetch(URL + `/public/getmarketsummaries`)
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to get the last 24 hour summary of a specific market.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
-         * @param market - a string literal for the market (ex: XKR/USDT)
+         * @param {string} market - a string literal for the market (ex: XKR/USDT)
+         * @return {Promise<any>}
          */
-        getMarketSummary: async function (market = '') {
-            const req = await fetch(URL + `/public/getmarketsummary?market=${market}`)
+        getMarketSummary: async function (market) {
+            if (!market) throw Error ('Missing argument')
+            const req = await fetch(URL + `/public/getmarketsummary?market=${market.toUpperCase()}`)
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to get retrieve the orderbook for a given market.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
-         * @param market - a string literal for the market (ex: XKR/USDT)
-         * @param type - buy, sell or both to return specific type of orderbook
+         * @param {string} market - a string literal for the market (ex: XKR/USDT)
+         * @param {string=} type - buy, sell or both to return specific type of orderbook
+         * @return {Promise<any>}
          */
         getOrderBook: async function (market = '', type = 'both') {
-            const req = await fetch(URL + `/public/getorderbook?market=${market}&type=${type}`)
+            if (!market) throw Error ('Missing argument')
+            const req = await fetch(URL + `/public/getorderbook?market=${market.toUpperCase()}&type=${type.toLowerCase()}`)
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to retrieve the latest trades that have occurred for a specific market.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
-         * @param market - a string literal for the market (ex: XKR/USDT)
+         * @param {string}market - a string literal for the market (ex: XKR/USDT)
+         * @return {Promise<any>}
          */
-        getMarketHistory: async function (market = '') {
-            const req = await fetch(URL + `/public/getmarkethistory?market=${market}`)
+        getMarketHistory: async function (market) {
+            if (!market) throw Error ('Missing argument')
+            const req = await fetch(URL + `/public/getmarkethistory?market=${market.toUpperCase()}`)
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to retrieve the system related status for all currencies listed on Txbit, such as can the currency be deposited, withdrawn or traded. How many pending deposits and withdrawals there are and a development note if it exists.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
+         * @return {Promise<any>}
          */
         getSystemStatus: async function () {
             const req = await fetch(URL + `/public/getsystemstatus`)
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to retrieve specific information and metadata about the listed currency on Txbit.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
-         * @param currency - a string literal for the currency (ex: XKR)
+         * @param {string} currency - a string literal for the currency (ex: XKR)
+         * @return {Promise<any>}
          */
-        getCurrencyInformation: async function (currency = '') {
-            const req = await fetch(URL + `/public/getcurrencyinformation?currency=${currency}`)
+        getCurrencyInformation: async function (currency) {
+            if (!currency) throw Error ('Missing argument')
+            const req = await fetch(URL + `/public/getcurrencyinformation?currency=${currency.toUpperCase()}`)
             return await req.json()
         },
 
-        /**
+        /** (TESTED)
          * Used to retrieve solvency information for listed currencies on Txbit. See the current Hot wallet and Cold wallet balances, Total deposits and withdrawals and the final balance to prove solvency. All calculated in real time.
          * [Read more]{@link https://apidocs.txbit.io/#public-api}
-         * @param currency - a string literal for the currency (ex: XKR)
+         * @param {string} currency - a string literal for the currency (ex: XKR)
+         * @return {Promise<any>}
          */
-        getCurrencyBalanceSheet: async function (currency = '') {
-            const req = await fetch(URL + `/public/getcurrencybalancesheet?currency=${currency}`)
+        getCurrencyBalanceSheet: async function (currency) {
+            if (!currency) throw Error ('Missing argument')
+            const req = await fetch(URL + `/public/getcurrencybalancesheet?currency=${currency.toUpperCase()}`)
             return await req.json()
         }
     }
