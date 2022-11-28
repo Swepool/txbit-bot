@@ -12,7 +12,7 @@ const main = async () => {
     console.log(clc.green('BOT STARTED 🚨'))
 
     console.log(await txbit.public.getSystemStatus())
-
+    txbit.account.getDepositHistory()
     //Build something cool 😎
 }
 
