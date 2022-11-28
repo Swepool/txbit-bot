@@ -7,7 +7,7 @@ Txbit api docs - https://apidocs.txbit.io
 Create a `.env` file in root and enter your key & secret created at TxBit.io
 You can have a look at `.env-example` for reference. Double check the api key-pair permissions as well.
 
-Then build your bot in `main.js`
+Then build your bot in `main.js` and run `npm run start`
 
 example:
 
