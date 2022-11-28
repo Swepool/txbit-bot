@@ -11,7 +11,7 @@ Then build your bot in `main.js`
 
 example:
 
-```
+```js
 const TXBIT_KEY = process.env.TXBIT_API_KEY
 const TXBIT_SECRET = process.env.TXBIT_API_SECRET
 
