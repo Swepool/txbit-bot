@@ -1,6 +1,6 @@
 {
   "name": "txbit-api-wrapper",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "api wrapper for txbit.io",
   "main": "index.js",
   "scripts": {
